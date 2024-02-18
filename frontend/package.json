@@ -16,6 +16,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "postcss-pxtorem": "^6.0.0",
+    "terser": "^5.27.1",
     "uuid": "^9.0.1",
     "vue": "^3.3.11",
     "vue-amazing-ui": "^0.1.32",

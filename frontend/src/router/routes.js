@@ -21,11 +21,5 @@ const routes = [
         title: '接收文件',
         component: receiveVue,
     },
-    // {
-    //     path: '/setting',
-    //     name: 'setting',
-    //     title: '信息设置',
-    //     component: settingVue,
-    // },
 ]
 export default routes

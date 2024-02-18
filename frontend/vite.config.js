@@ -17,6 +17,16 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  build: {
+    minify: "terser", // 必须开启：使用terserOptions才有效果
+    terserOptions: {
+      compress: {
+        //生产环境时移除console
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
