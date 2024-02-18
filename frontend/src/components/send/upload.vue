@@ -34,7 +34,7 @@ const dataChannel = pc.createDataChannel('fileTransfer', {
   id: 0,
 })
 dataChannel.binaryType = 'arraybuffer';
-dataChannel.bufferedAmountLowThreshold = 128 * 1024-1;
+dataChannel.bufferedAmountLowThreshold = 128 * 1024 - 1;
 
 dataChannel.onopen = (ev) => {
   ElMessage.success('连接已建立');
@@ -239,6 +239,7 @@ const handleDelete = (index, row) => {
 }
 
 //发送文件
+const dissend = ref(false);
 const BytePerChunk = 128 * 1024;
 var currentChunk = 0;
 const fileReader = new FileReader();
@@ -254,22 +255,21 @@ function readChunk() {
 fileReader.onload = function () {
   dataChannel.send(fileReader.result);
   currentChunk++;
+  if (BytePerChunk * currentChunk >= file.size) {
+    snedIndex.value++;
+    currentChunk = 0;
+    fileData.value.shift();
+  }
 }
 
 dataChannel.onbufferedamountlow = (event) => {
-  if (BytePerChunk * currentChunk < file.size) {
-    readChunk();
-  } else {
-    snedIndex.value++;
-    currentChunk = 0;
-    console.log("send over:", snedIndex.value);
-    console.log("bufferedamount:",dataChannel.bufferedAmount);
-  }
-};
+  readChunk();
+}
 
 function sendFiles() {
+  snedIndex.value = 0;
   if (0 < input.value.files.length) {
-    fileData.value = [];
+    dissend.value = true;
     currentChunk = 0;
     file = input.value.files[0];
     dataChannel.send(JSON.stringify({
@@ -293,6 +293,7 @@ watch(snedIndex, (newIndex) => {
   } else {
     let dt = new DataTransfer();
     input.value.files = dt.files;
+    dissend.value = false;
   }
 })
 
@@ -301,9 +302,9 @@ watch(snedIndex, (newIndex) => {
 <template>
   <div id="header">
     <el-row :gutter="10">
-      <el-col :span="20"><el-input v-model="inputRemoteCode" class="code-input" placeholder="Type User Code"
+      <el-col :span="18"><el-input v-model="inputRemoteCode" class="code-input" placeholder="Type User Code"
           :disabled="inputValid" /></el-col>
-      <el-col :span="4" style="text-align: right;"><el-button type="primary" @click="connection" :icon="Search" round
+      <el-col :span="6" style="text-align: right;"><el-button type="primary" @click="connection" :icon="Search" round
           id="row">Search</el-button></el-col>
     </el-row>
   </div>
@@ -328,7 +329,7 @@ watch(snedIndex, (newIndex) => {
     </el-table-column>
   </el-table>
   <div id="send">
-    <el-button color="#626aef" plain @click="sendFiles">Send</el-button>
+    <el-button color="#626aef" plain @click="sendFiles" :disabled="dissend">Send</el-button>
   </div>
 </template>
 

@@ -23,8 +23,7 @@ const { fileinfo, receiveBuffer, progress, count } = storeToRefs(fstore);
 
 onMounted(() => {
     for (let i = 0; i < count.value; i++) {
-        let p = progress.value[count.value - 1];
-        console.log(p);
+        let p = progress.value[i];
         let status = "";
         if (p === 100) {
             status = "success";
@@ -36,7 +35,6 @@ onMounted(() => {
             progress: p,
             status: status,
         })
-        console.log(receiveBuffer.value[i]);
     }
 })
 
