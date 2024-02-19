@@ -66,7 +66,7 @@ dataChannel.onmessage = (event) => {
   var view = new Uint8Array(receiveBuffer.value[count.value - 1], offset);
   view.set(buffer);
   offset += buffer.length;
-  setProgress(Math.floor(offset / fileinfo.value[count.value - 1].size * 100), count.value - 1);
+  setProgress(Math.ceil(offset / fileinfo.value[count.value - 1].size * 100), count.value - 1);
   if (offset === fileinfo.value[count.value - 1].size) {
     download.value = false;
     offset = 0;
