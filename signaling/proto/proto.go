@@ -32,7 +32,7 @@ type Request struct { //with CmdOffer, CmdAnswer, CmdCandidate
 	Cmd    int64  `json:"command"`
 	Source string `json:"source" validate:"required,gte=8,lte=40"`
 	Target string `json:"target" validate:"required,gte=8,lte=40"`
-	Body   string `json:"body"` // carry offer, answer, candidate
+	Body   string `json:"-"` // carry offer, answer, candidate
 }
 
 type Response struct {
