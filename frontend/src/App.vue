@@ -10,7 +10,11 @@ import Setting from '@/components/setting.vue';
                 <Navigator></Navigator>
             </el-header>
             <el-main>
-                <router-view></router-view>
+                <router-view v-slot="{ Component }">
+                    <keep-alive>
+                        <component :is="Component" />
+                    </keep-alive>
+                </router-view>
             </el-main>
             <el-footer>
                 <Setting></Setting>
